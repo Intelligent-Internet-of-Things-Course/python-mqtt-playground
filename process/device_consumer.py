@@ -18,7 +18,6 @@ def on_connect(client, userdata, flags, rc):
     mqtt_client.subscribe(data_topic)
     print("Subscribed to: " + data_topic)
 
-
 # Define a callback method to receive asynchronous messages
 def on_message(client, userdata, message):
     if mqtt.topic_matches_sub(device_info_topic, message.topic):

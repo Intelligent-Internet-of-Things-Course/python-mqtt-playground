@@ -21,7 +21,7 @@ def on_connect(client, userdata, flags, rc):
 client_id = "clientId0001-Producer"
 broker_ip = "127.0.0.1"
 broker_port = 1883
-default_topic = "device/temperature"
+default_topic = "sensor/temperature"
 message_limit = 1000
 
 mqtt_client = mqtt.Client(client_id)
