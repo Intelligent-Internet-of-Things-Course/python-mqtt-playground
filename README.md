@@ -1,6 +1,6 @@
 # Python MQTT Playground
 
-This Maven Project contains a group of Python MQTT Paho examples focusing on the following aspects:
+This Project contains a group of Python MQTT Paho examples focusing on the following aspects:
 
 - Simple MQTT Producer and Consumer
 - MQTT Producer and Consumer with Authentication
