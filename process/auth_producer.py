@@ -20,13 +20,13 @@ def on_connect(client, userdata, flags, rc):
 
 # Configuration variables
 client_id = "clientId0001-Producer"
-broker_ip = "155.185.228.20"
-broker_port = 7883
+broker_ip = "<server_ip>"
+broker_port = 1883
 default_topic = "sensor/temperature"
 message_limit = 1000
-username = "demo"
-password = "bhtlztwwehxhyirz"
-account_topic_prefix = "/iot/user/demo/"
+username = "<your_username>"
+password = "<your_password>"
+account_topic_prefix = "/iot/user/<your_username>/"
 
 mqtt_client = mqtt.Client(client_id)
 mqtt_client.on_connect = on_connect
