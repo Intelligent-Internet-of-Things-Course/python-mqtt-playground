@@ -20,17 +20,24 @@ def on_connect(client, userdata, flags, rc):
 
 # Define a callback method to receive asynchronous messages
 def on_message(client, userdata, message):
+    # If the received topic match the Info Subscription Filter
     if mqtt.topic_matches_sub(device_info_topic, message.topic):
-        message_payload = str(message.payload.decode("utf-8"))
-        device_descriptor = DeviceDescriptor(**json.loads(message_payload))
-        print(f"Received IoT Message (Retained:{message.retain}): Topic: {message.topic} DeviceId: {device_descriptor.deviceId} Manufacturer: {device_descriptor.producer} SoftwareVersion: {device_descriptor.softwareVersion}")
+       handle_device_info_message(message)
+    # If the received topic match the Telemetry Subscription Filter
     elif mqtt.topic_matches_sub(data_topic, message.topic):
-        message_payload = str(message.payload.decode("utf-8"))
-        message_descriptor = MessageDescriptor(**json.loads(message_payload))
-        print(f"Received IoT Message: Topic: {message.topic} Timestamp: {message_descriptor.timestamp} Type: {message_descriptor.type} Value: {message_descriptor.value}")
+        handle_device_telemetry_message(message)
     else:
         print("Unmanaged Topic !")
 
+def handle_device_info_message(message):
+    message_payload = str(message.payload.decode("utf-8"))
+    device_descriptor = DeviceDescriptor(**json.loads(message_payload))
+    print(f"Received IoT Message (Retained:{message.retain}): Topic: {message.topic} DeviceId: {device_descriptor.deviceId} Manufacturer: {device_descriptor.producer} SoftwareVersion: {device_descriptor.softwareVersion}")
+
+def handle_device_telemetry_message(message):
+    message_payload = str(message.payload.decode("utf-8"))
+    message_descriptor = MessageDescriptor(**json.loads(message_payload))
+    print(f"Received IoT Message: Topic: {message.topic} Timestamp: {message_descriptor.timestamp} Type: {message_descriptor.type} Value: {message_descriptor.value}")
 
 # Configuration variables
 client_id = "clientId0001-Consumer"

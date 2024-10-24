@@ -23,7 +23,6 @@ def on_message(client, userdata, message):
         message_descriptor = MessageDescriptor(**json.loads(message_payload))
         print(f"Received IoT Message: Topic: {message.topic} Timestamp: {message_descriptor.timestamp} Type: {message_descriptor.type} Value: {message_descriptor.value}")
 
-
 # Configuration variables
 client_id = "clientId0001-Consumer"
 broker_ip = "127.0.0.1"

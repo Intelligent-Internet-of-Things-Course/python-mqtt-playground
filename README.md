@@ -8,3 +8,4 @@ This Project contains a group of Python MQTT Paho examples focusing on the follo
 - IoT Device Demo Producer and Consumer
 
 Reference MQTT Python Library Paho - https://github.com/eclipse/paho.mqtt.python
+Paho-MQTT Version for the Lab: **1.6.1**

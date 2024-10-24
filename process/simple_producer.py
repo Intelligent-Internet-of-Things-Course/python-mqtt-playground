@@ -40,11 +40,20 @@ temperature_sensor = TemperatureSensor()
 # mqtt_client.publish(topic, payload=None, qos=0, retain=False)
 
 for message_id in range(message_limit):
+
+    # Simulate a new reading for the temperature sensor
     temperature_sensor.measure_temperature()
+
+    # Read the new temperature value
     payload_string = temperature_sensor.temperature_value
+
+    # Publish
     infot = mqtt_client.publish(default_topic, payload_string)
     infot.wait_for_publish()
+
     print(f"Message Sent: {message_id} Topic: {default_topic} Payload: {payload_string}")
+
+    # Wait 1 second until the next publish
     time.sleep(1)
 
 mqtt_client.loop_stop()

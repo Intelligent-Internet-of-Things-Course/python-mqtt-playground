@@ -34,14 +34,32 @@ temperature_sensor = TemperatureSensor()
 # MQTT Paho Publish method with all the available parameters
 # mqtt_client.publish(topic, payload=None, qos=0, retain=False)
 
+# Publish message_limit Temperature messages
 for message_id in range(message_limit):
+
+    # Update the Sensor Value
     temperature_sensor.measure_temperature()
-    payload_string = MessageDescriptor(int(time.time()),
-                                       "TEMPERATURE_SENSOR",
-                                       temperature_sensor.temperature_value).to_json()
+
+    # Create an Instance of the class MessageDescription with the updated sensor value
+    msg_descr = MessageDescriptor(int(time.time()),
+                                  "TEMPERATURE_SENSOR",
+                                  temperature_sensor.temperature_value)
+
+    # Serialize the MessageDescriptor instance into a Json String
+    payload_string = msg_descr.to_json()
+
+    # payload_string = MessageDescriptor(int(time.time()),
+    #                                    "TEMPERATURE_SENSOR",
+    #                                    temperature_sensor.temperature_value).to_json()
+
+    # Publish the Json Message of the MessageDescriptor Class
     infot = mqtt_client.publish(default_topic, payload_string)
     infot.wait_for_publish()
+
     print(f"Message Sent: {message_id} Topic: {default_topic} Payload: {payload_string}")
+
     time.sleep(1)
+
+#mqtt_client.disconnect()
 
 mqtt_client.loop_stop()

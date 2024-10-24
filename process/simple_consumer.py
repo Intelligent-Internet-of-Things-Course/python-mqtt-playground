@@ -17,6 +17,7 @@ def on_connect(client, userdata, flags, rc):
 
 # Define a callback method to receive asynchronous messages
 def on_message(client, userdata, message):
+
     print("\n##########################################################")
     print("message received: ", str(message.payload.decode("utf-8")))
     print("message topic=", message.topic)

@@ -8,7 +8,6 @@ import paho.mqtt.client as mqtt
 import time
 import uuid
 
-
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
@@ -17,9 +16,16 @@ def on_connect(client, userdata, flags, rc):
 def publish_device_info():
     # MQTT Paho Publish method with all the available parameters
     # mqtt_client.publish(topic, payload=None, qos=0, retain=False)
+
+    # Build target device info topic
     target_topic = "{0}/{1}/info".format(device_base_topic, device_descriptor.deviceId)
+
+    # Serialize into Json my device descriptor
     device_payload_string = device_descriptor.to_json()
+
+    # Publish Device Info JSON
     mqtt_client.publish(target_topic, device_payload_string, 0, True)
+
     print(f"Device Info Published: Topic: {target_topic} Payload: {device_payload_string}")
 
 
@@ -41,16 +47,30 @@ mqtt_client.loop_start()
 
 # Create Demo Temperature Sensor & Device Descriptor
 temperature_sensor = TemperatureSensor()
-device_descriptor = DeviceDescriptor(str(uuid.uuid1()), "PYTHON-ACME_CORPORATION", "0.1-beta")
 
+# Create new Device Description Class
+device_descriptor = DeviceDescriptor(
+    str(uuid.uuid1()),
+    "PYTHON-ACME_CORPORATION",
+    "0.1-beta")
+
+# Call my method to publish Device Information
 publish_device_info()
 
 for message_id in range(message_limit):
+
+    # Retrieve the updated sensor value
     temperature_sensor.measure_temperature()
+
+    # Obtain the serialized JSON string from the Message Descriptor
     payload_string = MessageDescriptor(int(time.time()),
                                        "TEMPERATURE_SENSOR",
                                        temperature_sensor.temperature_value).to_json()
+
+    # Build the target topic
     data_topic = "{0}/{1}/{2}".format(device_base_topic, device_descriptor.deviceId, sensor_topic)
+
+    # Publish Message
     infot = mqtt_client.publish(data_topic, payload_string)
     infot.wait_for_publish()
     print(f"Message Sent: {message_id} Topic: {data_topic} Payload: {payload_string}")

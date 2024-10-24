@@ -4,6 +4,7 @@ import random
 class TemperatureSensor:
 
     def __init__(self):
+        self.temperature_value = 0.0
         self.measure_temperature()
 
     # Another instance method with a parameter
